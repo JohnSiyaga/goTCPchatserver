@@ -31,13 +31,15 @@ func (s *server) run() {
 		case joinCMD:
 			s.join(cmd.client, cmd.args)
 		case roomListCMD:
-			s.listRooms(cmd.client, cmd.args)
+			s.listRooms(cmd.client)
 		case msgCMD:
 			s.msg(cmd.client, cmd.args)
 		case privateMsgCMD:
 			s.pm(cmd.client, cmd.args)
 		case quitCMD:
 			s.quit(cmd.client, cmd.args)
+		case helpCMD:
+			s.help(cmd.client)
 		}
 	}
 }
@@ -90,7 +92,7 @@ func (s *server) join(c *client, args []string) {
 
 }
 
-func (s *server) listRooms(c *client, args []string) {
+func (s *server) listRooms(c *client) {
 	// Get all rooms
 	var rooms []string
 	for name := range s.rooms {
@@ -129,6 +131,17 @@ func (s *server) quit(c *client, args []string) {
 	s.quitCurrentRoom(c)
 	c.msg("Goodbye!")
 	c.conn.Close()
+}
+
+func (s *server) help(c *client) {
+	// Print command list
+	c.msg("/nick <name> - Set your name (Default: anon) \n")
+	c.msg("/join <name> - Join a chatroom. If there isn't one, make one \n")
+	c.msg("/rooms - Show available rooms \n")
+	c.msg("/msg <msg> - Message all people in room \n")
+	c.msg("/pm <nick> <msg> - Message specific person in room (if nicknamed) \n")
+	c.msg("/quit - Leave chatserver \n")
+	c.msg("/help - Show this command list")
 }
 
 // Quit room, but not chatserver

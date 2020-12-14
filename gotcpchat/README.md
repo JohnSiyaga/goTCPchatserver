@@ -6,3 +6,4 @@
 - `/msg <msg>` - Message all people in room
 - `/pm <nick> <msg>` - Message specific person in room (if nicknamed)
 - `/quit` - Leave chatserver
+- `/help` - Show this command list

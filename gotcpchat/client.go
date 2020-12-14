@@ -69,8 +69,15 @@ func (c *client) readInput() {
 				client: c,
 				args:   args,
 			}
+		case "/help":
+			c.commands <- command{
+				id:     helpCMD,
+				client: c,
+				args:   args,
+			}
 		default: // If command doesn't exist
 			c.err(fmt.Errorf("Unknown command: %s", cmd))
+			c.msg("Type /help for a full command list \n")
 		}
 	}
 }
