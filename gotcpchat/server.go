@@ -71,6 +71,7 @@ func (s *server) nick(c *client, args []string) {
 func (s *server) join(c *client, args []string) {
 	roomName := args[1] // Get room name from '/join <roomName>'
 
+	// Check if room exists, if not make one
 	r, ok := s.rooms[roomName]
 	if !ok {
 		r = &room{
@@ -89,7 +90,8 @@ func (s *server) join(c *client, args []string) {
 
 	r.broadcast(c, fmt.Sprintf("%s has joined the room", c.nick))
 	c.msg(fmt.Sprintf("Welcome to %s", r.name))
-
+	// Print number of users in chatroom
+	c.msg(fmt.Sprintf("There are now currently %v users (including you) in this chatroom", len(r.members)))
 }
 
 func (s *server) listRooms(c *client) {
